@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="app_theme">#009dff</color>
+    <color name="app_theme_light">#f6fbff</color>
+    <color name="edit_text_button">#03A9f4</color>
+    <color name="edit_text_background">#f6fbff</color>montserrat.ttf
+    <color name="grey">#808080</color>
+    <color name="green">#13C81A</color>
+    <color name="red">#CA1306</color>
+
+
+    <color name="switchThumbColor">#FFFFFF</color>
+
+    <color name="switchTrackColor">#BDBDBD</color>
+
+    <color name="switchTextColor">#6200EE</color>
+    <color name="textInputFocusedLabelColor">#6200EE</color>
+    <color name="textInputNormalLabelColor">#757575</color>
+    <color name="textInputTextColor">#000000</color>
+    <color name="textInputHintColor">#9E9E9E</color>
+    <color name="buttonNormalColor">#6200EE</color>
+    <color name="buttonPressedColor">#4B0091</color>
+    <color name="buttonTextColor">#FFFFFF</color>
+</resources>
