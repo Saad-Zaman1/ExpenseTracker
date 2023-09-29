@@ -39,9 +39,11 @@ class SignupFragment : Fragment() {
         binding.viewModel = viewModelUser
         binding.lifecycleOwner = this
 
+
         viewModelUser.toastMessage.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), "$it", Toast.LENGTH_SHORT).show()
         }
+
 
         viewModelUser.errorMessageEmail.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
