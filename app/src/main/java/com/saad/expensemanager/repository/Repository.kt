@@ -6,8 +6,14 @@ import com.saad.expensemanager.room.ExpenseDao
 import com.saad.expensemanager.room.ExpenseEntity
 import com.saad.expensemanager.room.UserDao
 import com.saad.expensemanager.room.UserEntity
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class Repository(private val expenseDao: ExpenseDao, private val userDao: UserDao) {
+@Singleton
+class Repository @Inject constructor(
+    private val expenseDao: ExpenseDao,
+    private val userDao: UserDao
+) {
 
     fun getExpense(): LiveData<List<ExpenseEntity>> {
         return expenseDao.getExpense()

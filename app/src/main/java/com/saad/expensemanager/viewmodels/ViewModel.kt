@@ -9,10 +9,17 @@ import com.saad.expensemanager.model.TotalAmount
 import com.saad.expensemanager.repository.Repository
 import com.saad.expensemanager.room.ExpenseEntity
 import com.saad.expensemanager.utilities.Validate
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ViewModel(private val repository: Repository) : ViewModel() {
+
+// create factory behind the scene
+@HiltViewModel
+class ViewModel @Inject constructor(
+    private val repository: Repository
+) : ViewModel() {
     fun getExpense(): LiveData<List<ExpenseEntity>> {
         return repository.getExpense()
     }
@@ -68,11 +75,11 @@ class ViewModel(private val repository: Repository) : ViewModel() {
         val obj = AddData(
             0,
             "saad@gmail.com",
-            _title.value ?: "",
+            _title.value?.trim() ?: "",
             _selectedTime.value ?: "",
             _selectedDate.value ?: "",
             description.value ?: "",
-            amount.value ?: "",
+            amount.value?.trim() ?: "",
             isIncome.value ?: true
         )
         val titleError = Validate.validateTitle(obj.title)

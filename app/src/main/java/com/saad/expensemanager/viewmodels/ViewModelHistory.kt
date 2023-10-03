@@ -5,8 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.saad.expensemanager.repository.Repository
 import com.saad.expensemanager.room.ExpenseEntity
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ViewModelHistory(private val repository: Repository) : ViewModel() {
+
+@HiltViewModel
+class ViewModelHistory @Inject constructor(
+    private val repository: Repository
+) : ViewModel() {
 
     fun getByDate(date: String): LiveData<List<ExpenseEntity>> {
         return repository.getByDate(date)

@@ -1,5 +1,6 @@
 package com.saad.expensemanager.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,11 @@ class adapter : ListAdapter<ExpenseEntity, adapter.MyViewHolder>(DiffUtil()) {
         val amount = view.findViewById<TextView>(R.id.moneyTextView)
 
         fun bind(item: ExpenseEntity) {
+            if (item.isIncome == "Expense") {
+                amount.setTextColor(Color.parseColor("#FF0000"))
+            } else {
+                amount.setTextColor(Color.parseColor("#008000"))
+            }
             title.text = item.title
             time.text = item.time
             date.text = item.date

@@ -1,23 +1,36 @@
 package com.saad.expensemanager.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.saad.expensemanager.global.GlobalVariables
 import com.saad.expensemanager.model.AddUser
 import com.saad.expensemanager.repository.Repository
 import com.saad.expensemanager.room.UserEntity
+import com.saad.expensemanager.utilities.SharedPrefs
 import com.saad.expensemanager.utilities.Validate
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ViewModelAuthentication(private val repository: Repository) : ViewModel() {
+
+@HiltViewModel
+class ViewModelAuthentication @Inject constructor(
+    private val repository: Repository,
+    private val sharedPrefs: SharedPrefs
+) :
+    ViewModel() {
 
     var userName = MutableLiveData<String>()
     var userEmail = MutableLiveData<String>()
     var userPhone = MutableLiveData<String>()
     var userPassword = MutableLiveData<String>()
 
-//    val sharedPreference = SharedPrefs()
+    var isLoggedin = MutableLiveData<Boolean>().apply { value = false }
+
+    private val sp = sharedPrefs
 
 
     private val _toastMessage = MutableLiveData<String>()
@@ -34,9 +47,40 @@ class ViewModelAuthentication(private val repository: Repository) : ViewModel() 
 
     private val _errorMessagePassword = MutableLiveData<String>()
     val errorMessagePassword: LiveData<String> = _errorMessagePassword
+    fun onLogin() {
+        val emailError = Validate.validateEmail(userEmail.value ?: "")
+        val passwordError = Validate.validatePassword(userPassword.value ?: "")
+        val valideEmail = validateEmail(userEmail.value!!)
 
+        if (valideEmail.value?.email != userEmail.value) {
+            _toastMessage.postValue(
+                "Email not Exists ${
+                    userEmail.value
+                }"
+            )
+        }
+        if (emailError.isNotEmpty() || passwordError.isNotEmpty()) {
+            _errorMessageEmail.postValue(emailError)
+            _errorMessagePassword.postValue(passwordError)
+        } else {
+            _toastMessage.postValue(
+                "Email is ${
+                    userEmail.value
+                }"
+            )
+            sp.saveString(GlobalVariables.userEmail, userEmail.value ?: "")
+            sp.saveBoolean(GlobalVariables.isLoggedIn, true)
+            isLoggedin.value = true
+            userEmail.value = ""
+            userPassword.value = ""
+            Log.i("EmailU", "${userEmail.value}")
+        }
+
+
+    }
 
     fun onSave() {
+
 
         val obj = AddUser(
             0,
@@ -57,7 +101,6 @@ class ViewModelAuthentication(private val repository: Repository) : ViewModel() 
             _errorMessagePhone.postValue(phoneError)
             _errorMessageName.postValue(nameError)
         } else {
-            _toastMessage.postValue("SignUp clicked name is ${userName.value}")
             insertUser(
                 UserEntity(
                     0,
@@ -67,12 +110,19 @@ class ViewModelAuthentication(private val repository: Repository) : ViewModel() 
                     obj.password
                 )
             )
+            sp.saveString(GlobalVariables.userEmail, obj.email)
+            sp.saveBoolean(GlobalVariables.isLoggedIn, true)
 
+            isLoggedin.value = true
             userName.value = ""
             userEmail.value = ""
             userPhone.value = ""
             userPassword.value = ""
         }
+
+    }
+
+    fun gotoSignUp() {
 
     }
 

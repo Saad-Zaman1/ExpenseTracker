@@ -9,10 +9,10 @@ import android.view.Gravity
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.saad.expensemanager.R
 import com.saad.expensemanager.databinding.ActivityMainBinding
 import com.saad.expensemanager.databinding.BottomSheetLayoutBinding
@@ -20,28 +20,29 @@ import com.saad.expensemanager.fragments.ExpenseFragment
 import com.saad.expensemanager.fragments.HistoryFragment
 import com.saad.expensemanager.fragments.HomeFragment
 import com.saad.expensemanager.fragments.IncomeFragment
-import com.saad.expensemanager.repository.Repository
-import com.saad.expensemanager.room.DatabaseHelper
 import com.saad.expensemanager.viewmodels.ViewModel
-import com.saad.expensemanager.viewmodels.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: ViewModel
+    private val viewModel: ViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        val dao = DatabaseHelper.getDatabase(applicationContext).expenseDao()
-        val userDao = DatabaseHelper.getDatabase(applicationContext).userDao()
-        val repository = Repository(dao, userDao)
-        //.get(ViewModel::class.java)
-        viewModel = ViewModelProvider(this, ViewModelFactory(repository))[ViewModel::class.java]
+//
+//        val dao = DatabaseHelper.getDatabase(applicationContext).expenseDao()
+//        val userDao = DatabaseHelper.getDatabase(applicationContext).userDao()
+//        val repository = Repository(dao, userDao)
+//        .get(ViewModel::class.java)
+//        val repository = (this.application as ExpenseApplication).expenseRepository
+//        viewModel =
+//            ViewModelProvider(this, ViewModelFactory(repository))[ViewModel::class.java]
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this

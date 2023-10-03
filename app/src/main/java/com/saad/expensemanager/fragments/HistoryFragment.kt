@@ -8,22 +8,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.saad.expensemanager.R
 import com.saad.expensemanager.adapter.adapter
 import com.saad.expensemanager.databinding.FragmentHistoryBinding
-import com.saad.expensemanager.repository.Repository
-import com.saad.expensemanager.room.DatabaseHelper
-import com.saad.expensemanager.viewmodels.ViewModelFactoryHistory
 import com.saad.expensemanager.viewmodels.ViewModelHistory
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 
-
+@AndroidEntryPoint
 class HistoryFragment : Fragment() {
     private lateinit var binding: FragmentHistoryBinding
-    private lateinit var viewModelHistory: ViewModelHistory
+    private val viewModelHistory: ViewModelHistory by viewModels()
     private lateinit var getDate: String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,14 +34,12 @@ class HistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val dao = DatabaseHelper.getDatabase(requireContext()).expenseDao()
-        val userDao = DatabaseHelper.getDatabase(requireContext()).userDao()
-        val repository = Repository(dao, userDao)
-        viewModelHistory =
-            ViewModelProvider(
-                this,
-                ViewModelFactoryHistory(repository)
-            )[ViewModelHistory::class.java]
+//        val repository = (requireActivity().application as ExpenseApplication).expenseRepository
+//
+//        viewModelHistory =
+//            ViewModelProvider(
+//                this, ViewModelFactoryHistory(repository)
+//            )[ViewModelHistory::class.java]
 
 
         val calendar = Calendar.getInstance()

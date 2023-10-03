@@ -1,5 +1,6 @@
 package com.saad.expensemanager.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,17 +8,24 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.saad.expensemanager.R
+import com.saad.expensemanager.activity.MainActivity
 import com.saad.expensemanager.databinding.FragmentSignupBinding
-import com.saad.expensemanager.repository.Repository
-import com.saad.expensemanager.room.DatabaseHelper
+import com.saad.expensemanager.utilities.SharedPrefs
 import com.saad.expensemanager.viewmodels.ViewModelAuthentication
-import com.saad.expensemanager.viewmodels.ViewModelAuthenticationFactory
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+
+@AndroidEntryPoint
 class SignupFragment : Fragment() {
     private lateinit var binding: FragmentSignupBinding
-    private lateinit var viewModelUser: ViewModelAuthentication
+    private val viewModelUser: ViewModelAuthentication by viewModels()
+
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,13 +37,12 @@ class SignupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val dao = DatabaseHelper.getDatabase(requireContext()).expenseDao()
-        val userDao = DatabaseHelper.getDatabase(requireContext()).userDao()
-        val repository = Repository(dao, userDao)
-        viewModelUser = ViewModelProvider(
-            this,
-            ViewModelAuthenticationFactory(repository)
-        )[ViewModelAuthentication::class.java]
+//        val sharedPrefs = SharedPrefs(requireContext())
+//        val repository = (requireActivity().application as ExpenseApplication).expenseRepository
+//
+//        viewModelUser = ViewModelProvider(
+//            this, ViewModelAuthenticationFactory(repository, sharedPrefs)
+//        )[ViewModelAuthentication::class.java]
         binding.viewModel = viewModelUser
         binding.lifecycleOwner = this
 
@@ -70,6 +77,13 @@ class SignupFragment : Fragment() {
             if (it.isNotEmpty()) {
                 binding.etPass.error = it
                 return@observe
+            }
+        }
+        viewModelUser.isLoggedin.observe(viewLifecycleOwner) {
+            if (it == true) {
+                val intent = Intent(requireContext(), MainActivity::class.java)
+                startActivity(intent)
+                requireActivity().finish()
             }
         }
 

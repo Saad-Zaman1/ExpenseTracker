@@ -7,21 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.saad.expensemanager.R
 import com.saad.expensemanager.adapter.adapter
 import com.saad.expensemanager.databinding.FragmentHomeBinding
-import com.saad.expensemanager.repository.Repository
-import com.saad.expensemanager.room.DatabaseHelper
+import com.saad.expensemanager.utilities.SharedPrefs
 import com.saad.expensemanager.viewmodels.ViewModel
-import com.saad.expensemanager.viewmodels.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var viewModel: ViewModel
+    private val viewModel: ViewModel by viewModels()
     private lateinit var email: String
 
     /*
@@ -48,13 +47,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.i("Fragmenthome", "onViewCreate Method of home fragment")
-
-        val dao = DatabaseHelper.getDatabase(requireContext()).expenseDao()
-        val userDao = DatabaseHelper.getDatabase(requireContext()).userDao()
-        val repository = Repository(dao, userDao)
-
-        //.get(ViewModel::class.java)
-        viewModel = ViewModelProvider(this, ViewModelFactory(repository))[ViewModel::class.java]
+//
+//        val repository = (requireActivity().application as ExpenseApplication).expenseRepository
+//
+//        //.get(ViewModel::class.java)
+//        viewModel = ViewModelProvider(this, ViewModelFactory(repository))[ViewModel::class.java]
 
         val adapter = adapter()
         viewModel.getExpense().observe(viewLifecycleOwner) {
@@ -65,7 +62,8 @@ class HomeFragment : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
-
+        val sp = SharedPrefs(requireContext())
+        sp.getString("userEmail", "")
         email = "saad@gmail.com"
 
         viewModel.getTotalAmount(email, "Income").observe(viewLifecycleOwner) {
