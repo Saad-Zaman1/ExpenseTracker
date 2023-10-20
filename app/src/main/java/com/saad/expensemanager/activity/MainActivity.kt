@@ -35,15 +35,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-//
-//        val dao = DatabaseHelper.getDatabase(applicationContext).expenseDao()
-//        val userDao = DatabaseHelper.getDatabase(applicationContext).userDao()
-//        val repository = Repository(dao, userDao)
-//        .get(ViewModel::class.java)
-//        val repository = (this.application as ExpenseApplication).expenseRepository
-//        viewModel =
-//            ViewModelProvider(this, ViewModelFactory(repository))[ViewModel::class.java]
-
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 

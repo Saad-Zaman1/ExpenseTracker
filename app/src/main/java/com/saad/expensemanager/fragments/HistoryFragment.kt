@@ -34,14 +34,6 @@ class HistoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val repository = (requireActivity().application as ExpenseApplication).expenseRepository
-//
-//        viewModelHistory =
-//            ViewModelProvider(
-//                this, ViewModelFactoryHistory(repository)
-//            )[ViewModelHistory::class.java]
-
-
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -92,9 +84,7 @@ class HistoryFragment : Fragment() {
             }
         }
 
-//        viewModelHistory.getByDate(getDate).observe(viewLifecycleOwner) {
-//            adapter.submitList(it)
-//        }
+
         val recycleLayout = binding.recycleIncludeLayoutHistory
         val recyclerView = recycleLayout.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

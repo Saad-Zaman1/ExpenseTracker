@@ -13,6 +13,17 @@
         android:background="@color/cardview_light_background"
         tools:context=".fragments.ExpenseFragment">
 
+        <TextView
+            android:id="@+id/expenseHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expense"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/red"
+            android:textSize="24sp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
         <!-- Include the layout_recycler -->
         <include
             android:id="@+id/recycleIncludeLayoutExpense"
@@ -22,7 +33,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/expenseHeading" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
